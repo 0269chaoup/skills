@@ -7,7 +7,10 @@ version: "1.0.0"
 
 # ljg-skill-map: 技能地图
 
-扫描 `~/.claude/skills/` 下所有已安装技能，生成一目了然的可视化地图。
+扫描 OpenClaw 技能目录下所有已安装技能，生成一目了然的可视化地图。
+
+默认扫描路径：`/Users/zack/Documents/obsidian_cache/90-System/OpenClaw配置/skills/`
+如需覆盖，可设置环境变量：`OPENCLAW_SKILLS_DIR`
 
 ## 执行
 

@@ -88,6 +88,29 @@ version: "1.0.0"
 
 收集所有成功提炼的内容摘要。
 
+## MOC 路径匹配
+
+在写入文件前，执行以下逻辑确定输出路径：
+
+1. 读取 MOC 索引：
+   ```
+   Read: /Users/zack/Documents/obsidian_cache/90-System/OpenClaw-Setting/skills/moc-explorer/moc_index.json
+   ```
+
+2. 从用户输入中解析主题关键词（提取名词、领域词）
+
+3. 对每个 MOC 按以下规则打分：
+   - 标题含关键词：+3 分
+   - 文件名含关键词：+2 分
+   - 标签含关键词：+2 分
+   - keywords 字段含关键词：+1 分
+
+4. 选取得分最高的 MOC，将其文件夹作为输出目录；若最高得分为 0，使用 `00-Inbox/notes/`
+
+5. 示例决策：
+   - 用户说"分析特斯拉" → 得分最高的 MOC 可能是"投资分析"相关 → 输出到对应 MOC 目录
+   - 领域模糊或无匹配 → 默认 `00-Inbox/notes/`
+
 ### 4. 合成 org-mode 文档
 
 将步骤 2（研究结果）和步骤 3（内容提炼，如有）合成为一份结构化 org-mode 文档。
@@ -151,8 +174,8 @@ version: "1.0.0"
    - {书名} — {为什么值得读}
 ```
 
-**文件命名**：使用 denote naming schema，保存到 `~/Documents/notes/` 目录：
-`{YYYYMMDDTHHMMSS}==z--{城市}旅行研究.org`
+**文件命名**：使用 denote naming schema，保存到 `00-Inbox/notes/` 目录：
+`{YYYYMMDDTHHMMSS}==z--{城市}旅行研究.md`
 
 **写作要求**：
 - 每个推荐必须有「为什么看」和「看什么细节」，不许空泛
@@ -182,6 +205,12 @@ version: "1.0.0"
 📊 研究覆盖: {N}个博物馆 | {M}座古建 | {K}处考古遗址
 📎 深度内容: {X}个视频 | {Y}篇文章
 ```
+
+文件写入后报告路径，并输出：
+```
+✅ 笔记已创建：00-Inbox/notes/{YYYYMMDDTHHMMSS}==z--{城市}旅行研究.md
+```
+其中 `{vault_relative_path}` 为文件相对于 vault root 的路径。
 
 ## 关键约束
 

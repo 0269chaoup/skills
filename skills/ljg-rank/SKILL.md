@@ -36,8 +36,37 @@ user_invocable: true
 
 四个判据的验证必须做，融进文章里。验证本身就是叙事的一部分——"拆掉一个生成器世界会变成什么样"是好故事，"用生成器推出一个意想不到的现象"是好结尾。不要另设附录。
 
+## MOC 路径匹配
+
+在写入文件前，执行以下逻辑确定输出路径：
+
+1. 读取 MOC 索引：
+   ```
+   Read: /Users/zack/Documents/obsidian_cache/90-System/OpenClaw-Setting/skills/moc-explorer/moc_index.json
+   ```
+
+2. 从用户输入中解析主题关键词（提取名词、领域词）
+
+3. 对每个 MOC 按以下规则打分：
+   - 标题含关键词：+3 分
+   - 文件名含关键词：+2 分
+   - 标签含关键词：+2 分
+   - keywords 字段含关键词：+1 分
+
+4. 选取得分最高的 MOC，将其文件夹作为输出目录；若最高得分为 0，使用 `00-Inbox/notes/`
+
+5. 示例决策：
+   - 用户说"分析特斯拉" → 得分最高的 MOC 可能是"投资分析"相关 → 输出到对应 MOC 目录
+   - 领域模糊或无匹配 → 默认 `00-Inbox/notes/`
+
 ## 输出
 
 1. 获取时间戳：`date +%Y%m%dT%H%M%S` 和 `date "+%Y-%m-%d %a %H:%M"`
-2. 写入 `~/Documents/notes/{时间戳}--{领域}的秩__rank.org`
+2. 写入 `00-Inbox/notes/{时间戳}--{领域}的秩__rank.md`
 3. 报告文件路径给用户
+
+文件写入后报告路径，并输出：
+```
+✅ 笔记已创建：00-Inbox/notes/{时间戳}--{领域}的秩__rank.md
+```
+其中 `{vault_relative_path}` 为文件相对于 vault root 的路径。

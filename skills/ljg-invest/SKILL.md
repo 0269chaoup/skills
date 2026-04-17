@@ -107,13 +107,42 @@ description: 投资分析, 生成一份深度投资分析报告。不做传统�
 
 用一句话回答：这个项目的本质是什么？创造新秩序，还是搬运旧秩序？
 
+## MOC 路径匹配
+
+在写入文件前，执行以下逻辑确定输出路径：
+
+1. 读取 MOC 索引：
+   ```
+   Read: /Users/zack/Documents/obsidian_cache/90-System/OpenClaw-Setting/skills/moc-explorer/moc_index.json
+   ```
+
+2. 从用户输入中解析主题关键词（提取名词、领域词）
+
+3. 对每个 MOC 按以下规则打分：
+   - 标题含关键词：+3 分
+   - 文件名含关键词：+2 分
+   - 标签含关键词：+2 分
+   - keywords 字段含关键词：+1 分
+
+4. 选取得分最高的 MOC，将其文件夹作为输出目录；若最高得分为 0，使用 `00-Inbox/notes/`
+
+5. 示例决策：
+   - 用户说"分析特斯拉" → 得分最高的 MOC 可能是"投资分析"相关 → 输出到对应 MOC 目录
+   - 领域模糊或无匹配 → 默认 `00-Inbox/notes/`
+
 ## 输出
 
 - 格式：org-mode
-- 目录：`~/Documents/notes/`
-- 命名：denote schema — `YYYYMMDDTHHMMSS==z--投资分析-PROJECT_NAME.org`
-  - 例：`20260326153000==z--投资分析-example-ai.org`
+- 目录：`00-Inbox/notes/`
+- 命名：denote schema — `YYYYMMDDTHHMMSS==z--投资分析-PROJECT_NAME.md`
+  - 例：`20260326153000==z--投资分析-example-ai.md`
 - 用 Write 工具写入，写完告知完整路径
+
+文件写入后报告路径，并输出：
+```
+✅ 笔记已创建：00-Inbox/notes/{时间戳}==z--投资分析-{PROJECT_NAME}.md
+```
+其中 `{vault_relative_path}` 为文件相对于 vault root 的路径。
 
 ## 生成规则
 

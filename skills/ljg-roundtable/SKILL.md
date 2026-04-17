@@ -24,7 +24,7 @@ Assistant: [Launches roundtable discussion on free will]
 为了执行本项技能，请严格按照以下步骤操作：
 
 1. **读取参考资料**
-   读取 `~/.claude/skills/ljg-roundtable/references/original-prompt.org` 了解原始框架设计意图。
+   读取 `references/original-prompt.md` 了解原始框架设计意图（相对 skill 目录解析）。
 
 2. **解析议题**
    从用户输入中提取核心议题。如果用户只说"圆桌讨论"未给议题，询问议题。
@@ -91,32 +91,54 @@ Assistant: [Launches roundtable discussion on free will]
    - 生成**完整知识网络** ASCII 图：标出所有关键概念、立场、争议点及其关系
    - 列出**未解决的开放问题**（讨论中暴露但未穷尽的方向）
 
-7. **写入 org 文件（完整保存，一字不差）**
-   将讨论**全部原文**写入 org-mode 文件，不压缩、不删减、不改写任何发言内容：
+## MOC 路径匹配
+
+在写入文件前，执行以下逻辑确定输出路径：
+
+1. 读取 MOC 索引：
+   ```
+   Read: /Users/zack/Documents/obsidian_cache/90-System/OpenClaw-Setting/skills/moc-explorer/moc_index.json
+   ```
+
+2. 从用户输入中解析主题关键词（提取名词、领域词）
+
+3. 对每个 MOC 按以下规则打分：
+   - 标题含关键词：+3 分
+   - 文件名含关键词：+2 分
+   - 标签含关键词：+2 分
+   - keywords 字段含关键词：+1 分
+
+4. 选取得分最高的 MOC，将其文件夹作为输出目录；若最高得分为 0，使用 `00-Inbox/notes/`
+
+5. 示例决策：
+   - 用户说"分析特斯拉" → 得分最高的 MOC 可能是"投资分析"相关 → 输出到对应 MOC 目录
+   - 领域模糊或无匹配 → 默认 `00-Inbox/notes/`
+
+7. **写入 org 文件**
+   将讨论全貌整合为 org-mode 格式并写入文件：
    1. 运行 `date +%Y%m%dT%H%M%S` 获取时间戳
-   2. 写入 `~/Documents/notes/{timestamp}--圆桌-{议题关键词}__roundtable.org`
+   2. 写入 `00-Inbox/notes/{timestamp}--圆桌-{议题关键词}__roundtable.md`
    3. org 文件结构：
       ```org
       #+title: 圆桌：{议题}
       #+date: [{日期}]
       #+filetags: :roundtable:
       * 议题与参会者
-      [完整的参会者介绍，包括姓名、MBTI、立场、选择理由]
-      * 开场：定义
-      [主持人开场词 + 每位参会者的完整定义性发言，原文照录]
       * 各轮讨论记录
       ** 第 N 轮：{引导问题}
       *** 发言记录
-      [本轮所有发言的完整原文，包括行动标签、全部论述、简言之]
-      *** 主持人综述
-      [核心争议点 + ASCII 框架图 + 下一层引导问题，原文照录]
+      *** 核心争议
+      *** ASCII 框架图
       * 知识网络（全局）
-      [完整的全局总结 + ASCII 知识网络图]
       * 开放问题
-      [所有未解决的开放问题]
       ```
-      **关键要求：每一段发言、每一个 ASCII 图、每一句主持人综述，都必须完整保留原文，禁止摘要或压缩。**
    4. 向用户报告文件路径
+
+文件写入后报告路径，并输出：
+```
+✅ 笔记已创建：00-Inbox/notes/{timestamp}--圆桌-{议题关键词}__roundtable.md
+```
+其中 `{vault_relative_path}` 为文件相对于 vault root 的路径。
 
 ### 主持人行为准则
 

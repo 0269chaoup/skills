@@ -38,7 +38,7 @@ version: "1.0.1"
 
 **步骤 B — 铸信息图（ljg-card -i）：**
 
-以步骤 A 的解析内容为输入，调用 Skill tool 执行 `ljg-card -i`。生成 PNG 文件到 `~/Downloads/`。
+以步骤 A 的解析内容为输入，调用 Skill tool 执行 `ljg-card -i`。生成 PNG 文件到 `/Users/zack/Documents/obsidian_cache/00-Inbox/notes/`。
 
 ### 3. 多词并行
 
@@ -49,10 +49,10 @@ version: "1.0.1"
 ```
 ════ 词卡完成 ═══════════════════════
 📖 {Word1}
-   🖼️ ~/Downloads/{Word1}.png
+   🖼️ /Users/zack/Documents/obsidian_cache/00-Inbox/notes/{Word1}.png
 
 📖 {Word2}
-   🖼️ ~/Downloads/{Word2}.png
+   🖼️ /Users/zack/Documents/obsidian_cache/00-Inbox/notes/{Word2}.png
 ...
 ```
 

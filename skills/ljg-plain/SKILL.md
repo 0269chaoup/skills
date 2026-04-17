@@ -26,8 +26,8 @@ version: "5.0.0"
 
 - 时间戳：`date +%Y%m%dT%H%M%S`
 - 可读时间：`date "+%Y-%m-%d %a %H:%M"`
-- 文件名：`{时间戳}--plain-{简短标题}__plain.org`
-- 输出目录：`~/Documents/notes/`
+- 文件名：`{时间戳}--plain-{简短标题}__plain.md`
+- 输出目录：`00-Inbox/notes/`
 
 ### Org 文件头
 
@@ -40,6 +40,12 @@ version: "5.0.0"
 ```
 
 文件写入后报告路径。
+
+文件写入后报告路径，并输出：
+```
+✅ 笔记已创建：00-Inbox/notes/{时间戳}--plain-{简短标题}__plain.md
+```
+其中 `{vault_relative_path}` 为文件相对于 vault root 的路径。
 
 ## 红线（每条必须过，顺序即优先级）
 
@@ -93,9 +99,32 @@ URL → WebFetch | 文本 → 直接用 | 文件路径 → Read | 概念 → 直
 
 扫完列修改清单（哪句触发什么，改前→改后）。清单不写入文件。
 
+## MOC 路径匹配
+
+在写入文件前，执行以下逻辑确定输出路径：
+
+1. 读取 MOC 索引：
+   ```
+   Read: /Users/zack/Documents/obsidian_cache/90-System/OpenClaw-Setting/skills/moc-explorer/moc_index.json
+   ```
+
+2. 从用户输入中解析主题关键词（提取名词、领域词）
+
+3. 对每个 MOC 按以下规则打分：
+   - 标题含关键词：+3 分
+   - 文件名含关键词：+2 分
+   - 标签含关键词：+2 分
+   - keywords 字段含关键词：+1 分
+
+4. 选取得分最高的 MOC，将其文件夹作为输出目录；若最高得分为 0，使用 `00-Inbox/notes/`
+
+5. 示例决策：
+   - 用户说"分析特斯拉" → 得分最高的 MOC 可能是"投资分析"相关 → 输出到对应 MOC 目录
+   - 领域模糊或无匹配 → 默认 `00-Inbox/notes/`
+
 ### 4. 生成 Org 文件
 
-按 Denote 规范获取时间戳，写出文件头 + 正文，存入 `~/Documents/notes/`。
+按 Denote 规范获取时间戳，写出文件头 + 正文，存入 `00-Inbox/notes/`。
 
 ## 验收
 
