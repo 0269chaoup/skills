@@ -219,7 +219,7 @@ mdize_skill() {
     # Real Org examples (headings, #+begin_example, etc.) must keep the org fence.
     perl -0pi -e 's/```org\n(?=(?:title|subtitle|date|tags|identifier|source|author|authors|venue):)/```yaml\n/g' "$file"
     perl -0pi -e 's/```org\n#\+begin_example\n(.*?)#\+end_example\n```/```text\n$1```/gs' "$file"
-    sed -i '' -e 's/^```org$/```text/' "$file"
+    perl -0pi -e 's/```org\n(?=- \*\*x\*\*：)/```markdown\n/g' "$file"
     for r in ${renames[@]+"${renames[@]}"}; do
       sed -i '' "s/${r//./\\.}/${r%.org}.md/g" "$file"
     done
