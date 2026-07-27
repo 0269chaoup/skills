@@ -18,15 +18,23 @@ function displayWidth(line: string): number {
 function validate(content: string, file: string, coverage?: string): Result {
   const errors: string[] = [];
   const warnings: string[] = [];
-  const requiredHeaders = ["TITLE", "SUBTITLE", "DATE", "FILETAGS", "IDENTIFIER"];
+  const markdownMode = file.toLowerCase().endsWith(".md");
+  const requiredHeaders = markdownMode
+    ? ["title", "subtitle", "date", "tags", "identifier"]
+    : ["TITLE", "SUBTITLE", "DATE", "FILETAGS", "IDENTIFIER"];
 
   for (const header of requiredHeaders) {
-    if (!new RegExp(`^#\\+${header}:\\s*\\S`, "mi").test(content)) {
-      errors.push(`缺少或为空的 #+${header}`);
+    const pattern = markdownMode
+      ? new RegExp(`^${header}:\\s*\\S`, "mi")
+      : new RegExp(`^#\\+${header}:\\s*\\S`, "mi");
+    if (!pattern.test(content)) {
+      errors.push(`缺少或为空的 ${markdownMode ? header : `#+${header}`}`);
     }
   }
 
-  const identifier = content.match(/^#\+IDENTIFIER:\s*(\S+)/mi)?.[1] ?? "";
+  const identifier = markdownMode
+    ? content.match(/^identifier:\s*(\S+)/mi)?.[1] ?? ""
+    : content.match(/^#\+IDENTIFIER:\s*(\S+)/mi)?.[1] ?? "";
   const filenameIdentifier = basename(file).match(/^(\d{8}T\d{6})--/)?.[1] ?? "";
   if (!filenameIdentifier) {
     errors.push("文件名不是 Denote 时间戳格式");
@@ -34,15 +42,21 @@ function validate(content: string, file: string, coverage?: string): Result {
     errors.push(`IDENTIFIER ${identifier || "为空"} 与文件名 ${filenameIdentifier} 不一致`);
   }
 
-  const firstHeadingIndex = content.search(/^\* [^*]/m);
+  const firstHeadingIndex = markdownMode
+    ? content.search(/^# [^#]/m)
+    : content.search(/^\* [^*]/m);
   const opening = firstHeadingIndex >= 0 ? content.slice(0, firstHeadingIndex) : content;
-  const triad = [...opening.matchAll(/^- \*(x|f|f\(x\))\*：.+$/gm)].map((match) => match[1]);
+  const triadPattern = markdownMode
+    ? /^- \*\*(x|f|f\(x\))\*\*：.+$/gm
+    : /^- \*(x|f|f\(x\))\*：.+$/gm;
+  const triad = [...opening.matchAll(triadPattern)].map((match) => match[1]);
   const expectedTriad = ["x", "f", "f(x)"];
   if (JSON.stringify(triad) !== JSON.stringify(expectedTriad)) {
     errors.push("开头必须按 x、f、f(x) 恰好各有一行");
   }
 
-  const headings = [...content.matchAll(/^\* ([^*].*)$/gm)].map((match) => match[1].trim());
+  const headingPattern = markdownMode ? /^# ([^#].*)$/gm : /^\* ([^*].*)$/gm;
+  const headings = [...content.matchAll(headingPattern)].map((match) => match[1].trim());
   const expectedHeadings = [
     "x：作者在讨论什么问题",
     "f：作者怎样回答",
@@ -53,7 +67,8 @@ function validate(content: string, file: string, coverage?: string): Result {
     errors.push(`一级标题必须且只能依次为：${expectedHeadings.join(" / ")}`);
   }
 
-  const calibration = content.split(/^\* 资料校准\s*$/m)[1] ?? "";
+  const calibrationPattern = markdownMode ? /^# 资料校准\s*$/m : /^\* 资料校准\s*$/m;
+  const calibration = content.split(calibrationPattern)[1] ?? "";
   if (!/材料等级[：:]/.test(calibration)) {
     errors.push("资料校准中缺少「材料等级」");
   }
@@ -86,7 +101,10 @@ function validate(content: string, file: string, coverage?: string): Result {
     if (challengeFields !== 3) errors.push("覆盖记录没有完成当前 f、反证与处理");
   }
 
-  const exampleBlocks = [...content.matchAll(/^#\+begin_example\s*$([\s\S]*?)^#\+end_example\s*$/gmi)];
+  const examplePattern = markdownMode
+    ? /^```(?:text)?\s*$([\s\S]*?)^```\s*$/gmi
+    : /^#\+begin_example\s*$([\s\S]*?)^#\+end_example\s*$/gmi;
+  const exampleBlocks = [...content.matchAll(examplePattern)];
   if (exampleBlocks.length > 1) {
     errors.push("最多保留一个 example 图块");
   }
@@ -97,8 +115,10 @@ function validate(content: string, file: string, coverage?: string): Result {
     errors.push(`ASCII 图宽度 ${maxDiagramWidth}，超过 80`);
   }
 
-  const bodyStart = content.search(/^\* x：作者在讨论什么问题\s*$/m);
-  const bodyEnd = content.search(/^\* 资料校准\s*$/m);
+  const bodyStart = content.search(
+    markdownMode ? /^# x：作者在讨论什么问题\s*$/m : /^\* x：作者在讨论什么问题\s*$/m,
+  );
+  const bodyEnd = content.search(calibrationPattern);
   const body = bodyStart >= 0 ? content.slice(bodyStart, bodyEnd >= 0 ? bodyEnd : undefined) : "";
   const bodyChars = [...body.replace(/\s/g, "")].length;
   if (bodyChars < 900 || bodyChars > 1600) {
@@ -118,6 +138,7 @@ function validate(content: string, file: string, coverage?: string): Result {
       max_diagram_width: maxDiagramWidth,
       body_chars: bodyChars,
       coverage_supplied: Boolean(coverage),
+      format: markdownMode ? "markdown" : "org",
     },
   };
 }
@@ -129,7 +150,7 @@ const coverageFlag = args.indexOf("--coverage");
 const coveragePath = coverageFlag >= 0 ? args[coverageFlag + 1] : undefined;
 
 if (!file) {
-  console.error("用法：bun scripts/validate_note.ts <note.org>");
+  console.error("用法：bun scripts/validate_note.ts <note.org|note.md>");
   console.error("或：  bun scripts/validate_note.ts --stdin <denote-filename>");
   process.exit(2);
 }

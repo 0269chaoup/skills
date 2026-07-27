@@ -182,9 +182,25 @@ mdize_skill() {
       -e 's/__constraint\.org/__constraint.md/g' \
       -e 's/__plain\.org/__plain.md/g' \
       -e 's/__blind\.org/__blind.md/g' \
+      -e 's/__book\.org/__book.md/g' \
       -e 's/template\.org/template.md/g' \
       -e 's/org-mode/markdown/g' \
       -e 's/Org-mode/Markdown/g' \
+      -e 's/Defaults to a saved org note/Defaults to a saved markdown note/g' \
+      -e 's/保存 org 笔记/保存 Markdown 笔记/g' \
+      -e 's/写 org 文件时/写 Markdown 文件时/g' \
+      -e 's/写入 Org 后运行/写入 Markdown 后运行/g' \
+      -e 's/\/note\.org/\/note.md/g' \
+      -e 's/<note\.org>/<note.md>/g' \
+      -e 's/- \*x\*：/- **x**：/g' \
+      -e 's/- \*f\*：/- **f**：/g' \
+      -e 's/- \*f(x)\*：/- **f(x)**：/g' \
+      -e 's/`\* x：/`# x：/g' \
+      -e 's/`\* f：/`# f：/g' \
+      -e 's/`\* f(x)：/`# f(x)：/g' \
+      -e 's/`\* 资料校准/`# 资料校准/g' \
+      -e 's/org example ASCII 图/Markdown fenced ASCII 图/g' \
+      -e 's/org 的 `#+begin_example` \/ `#+end_example` 块/Markdown 的 fenced code block/g' \
       -e 's/加粗用 `\*bold\*`（单星号），禁止 `\*\*bold\*\*`/加粗用 `**bold**`（双星号）/g' \
       -e 's/标题层级从 `\*` 开始/标题层级从 `#` 开始/g' \
       -e 's/Org 加粗使用单星号，标题从 `\*` 开始且不跳级。/Markdown 加粗使用双星号，标题从 `#` 开始且不跳级。/g' \
@@ -197,9 +213,13 @@ mdize_skill() {
     sed -E -i '' \
       -e 's/^#\+(title|subtitle|date|filetags|identifier|source|author|authors|venue):/\1:/' \
       "$file"
+    perl -pi -e 's/^#\+(TITLE|SUBTITLE|DATE|FILETAGS|IDENTIFIER|SOURCE|AUTHOR|AUTHORS|VENUE):/\L$1:/;' "$file"
+    sed -i '' -e 's/^filetags:/tags:/' "$file"
     # Only relabel Org fences that now contain YAML-style front matter.
     # Real Org examples (headings, #+begin_example, etc.) must keep the org fence.
-    perl -0pi -e 's/```org\n(?=(?:title|subtitle|date|filetags|identifier|source|author|authors|venue):)/```yaml\n/g' "$file"
+    perl -0pi -e 's/```org\n(?=(?:title|subtitle|date|tags|identifier|source|author|authors|venue):)/```yaml\n/g' "$file"
+    perl -0pi -e 's/```org\n#\+begin_example\n(.*?)#\+end_example\n```/```text\n$1```/gs' "$file"
+    sed -i '' -e 's/^```org$/```text/' "$file"
     for r in ${renames[@]+"${renames[@]}"}; do
       sed -i '' "s/${r//./\\.}/${r%.org}.md/g" "$file"
     done
