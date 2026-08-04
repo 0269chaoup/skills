@@ -1,6 +1,6 @@
 ---
 name: ljg-paper
-description: "Paper reader for non-academics. Finds the load-bearing concepts the reader does not yet truly have, rebuilds them through relations and cases, and turns one paper into a bounded model that explains a concrete phenomenon. USE WHEN the user shares an arXiv link OR paper URL OR PDF OR local paper file OR paper title, or asks to read, explain, analyze, or understand a paper. Defaults to a saved org note. NOT FOR experiment reproduction, exhaustive method summaries, formal peer review, benchmark tables, or literature surveys."
+description: "Paper reader for non-academics. Finds the load-bearing concepts the reader does not yet truly have, rebuilds them through relations and cases, and turns one paper into a bounded model that explains a concrete phenomenon. USE WHEN the user shares an arXiv link OR paper URL OR PDF OR local paper file OR paper title, or asks to read, explain, analyze, or understand a paper. Defaults to a saved Markdown note. NOT FOR experiment reproduction, exhaustive method summaries, formal peer review, benchmark tables, or literature surveys."
 ---
 
 # ljg-paper：把陌生概念长成解释模型
@@ -23,30 +23,30 @@ description: "Paper reader for non-academics. Finds the load-bearing concepts th
 
 | 输入 | 必读 | 输出 |
 |---|---|---|
-| arXiv、PDF、paper URL、本地论文 | `ReadingGuide.md` | 按四段结构生成 org 笔记 |
-| 只有论文标题 | 找到可靠原文后读 `ReadingGuide.md` | 按四段结构生成 org 笔记 |
+| arXiv、PDF、paper URL、本地论文 | `ReadingGuide.md` | 按四段结构生成 Markdown 笔记 |
+| 只有论文标题 | 找到可靠原文后读 `ReadingGuide.md` | 按四段结构生成 Markdown 笔记 |
 | 用户明确只要口头解释 | `ReadingGuide.md` | 不写文件，按同一理解路径讲 |
 
-写 org 文件时再读 `references/template.org`。默认保存到 `~/Documents/notes/`。
+写 Markdown 文件时再读 `references/template.md`。默认保存到 `00-Inbox/notes/`（vault 相对路径）。
 
-文件名沿用 Denote：`{YYYYMMDDTHHMMSS}--paper-{方法名或论文关键词}__paper.org`；时间戳用 `date +%Y%m%dT%H%M%S` 生成。
+文件名沿用 Denote（Markdown 版本）：`{YYYYMMDDTHHMMSS}--paper-{方法名或论文关键词}__paper.md`；时间戳用 `date +%Y%m%dT%H%M%S` 生成。
 
 ## Gotchas
 
-- *`#+source` 是 meta-info，不是参考资料列表。* 只保留一个最接近论文原文的规范 URL，直接写裸 URL；不加链接描述，不并列摘要页、PDF 页或其他入口。
-- *压出中心命题太早，会把未知概念藏进一句漂亮话。* 先写暂定命题，再扫描其中每个承重词；概念补齐后必须重写命题。
-- *熟悉感最容易冒充理解。* 能翻译术语、复述定义或举一个相似例子，都不等于拥有概念；单个概念要经得起区别、关系和案例检查，整体模型还要经得起条件变化检查。
-- *概念清单也会制造碎片。* 不按论文出现顺序或字母顺序罗列；按依赖关系补概念，并立刻接回同一个现象。
-- *定义不是概念。* 每个概念都要在至少一条关系和一个具体案例中工作；孤立释义默认删除。
-- *模型不是流程图的别名。* 它必须解释原锚点、区分一个邻近情况，并对条件变化给出有方向的预测。
-- *并非每篇论文都在反对旧观念。* 评测、数据集和工具论文常常只是暴露旧尺子的盲点；不要硬造稻草人。
-- *评测贡献不等于科学发现。* 新 benchmark 让某个问题变得可测，不等于解释了现实世界。
-- *证据和适用范围必须贴着主张。* 独立实验摘要和独立免责声明都会切断它们与洞见的关系。
-- *不要默认 prose 就是最清楚的解释。* 架构、因果链、分布、权衡和状态变化若难以在脑中成形，应让关系直接显形。
-- *图也会夸大论文。* 图必须与它所解释的证据和边界相邻；不能把「在这些条件下显示」画成普遍规律。
-- *不要把公式删除当成通俗。* 若一个关系式就是核心洞见的最短表达，保留一个最小公式并立刻翻译成人话；应删除的是未解释的公式堆。
-- *启发不是应用清单。* 优先只留一个判断问题，最多展开两个真正相关的用法。
-- *允许思想含量有限。* 工程增量就说是工程增量；没有直接用途时不要硬编。
+- **`source` 是 meta-info，不是参考资料列表。** 只保留一个最接近论文原文的规范 URL，直接写裸 URL；不加链接描述，不并列摘要页、PDF 页或其他入口。
+- **压出中心命题太早，会把未知概念藏进一句漂亮话。** 先写暂定命题，再扫描其中每个承重词；概念补齐后必须重写命题。
+- **熟悉感最容易冒充理解。** 能翻译术语、复述定义或举一个相似例子，都不等于拥有概念；单个概念要经得起区别、关系和案例检查，整体模型还要经得起条件变化检查。
+- **概念清单也会制造碎片。** 不按论文出现顺序或字母顺序罗列；按依赖关系补概念，并立刻接回同一个现象。
+- **定义不是概念。** 每个概念都要在至少一条关系和一个具体案例中工作；孤立释义默认删除。
+- **模型不是流程图的别名。** 它必须解释原锚点、区分一个邻近情况，并对条件变化给出有方向的预测。
+- **并非每篇论文都在反对旧观念。** 评测、数据集和工具论文常常只是暴露旧尺子的盲点；不要硬造稻草人。
+- **评测贡献不等于科学发现。** 新 benchmark 让某个问题变得可测，不等于解释了现实世界。
+- **证据和适用范围必须贴着主张。** 独立实验摘要和独立免责声明都会切断它们与洞见的关系。
+- **不要默认 prose 就是最清楚的解释。** 架构、因果链、分布、权衡和状态变化若难以在脑中成形，应让关系直接显形。
+- **图也会夸大论文。** 图必须与它所解释的证据和边界相邻；不能把「在这些条件下显示」画成普遍规律。
+- **不要把公式删除当成通俗。** 若一个关系式就是核心洞见的最短表达，保留一个最小公式并立刻翻译成人话；应删除的是未解释的公式堆。
+- **启发不是应用清单。** 优先只留一个判断问题，最多展开两个真正相关的用法。
+- **允许思想含量有限。** 工程增量就说是工程增量；没有直接用途时不要硬编。
 
 ## 概念缺口到解释模型
 
@@ -80,7 +80,7 @@ description: "Paper reader for non-academics. Finds the load-bearing concepts th
 | 公式就是不可替代的核心关系 | 一个最小公式，加人话翻译 |
 | 两三句话已经足够 | 纯文字 |
 
-图不是标配。它只在降低理解成本时出现，并放在概念已经用人话和案例落地之后；图负责让关系显形，不替代概念形成。相关证据和适用边界紧随其后。ASCII 图使用 org 的 `#+begin_example` / `#+end_example` 块，宽度不超过 80 字符。
+图不是标配。它只在降低理解成本时出现，并放在概念已经用人话和案例落地之后；图负责让关系显形，不替代概念形成。相关证据和适用边界紧随其后。ASCII 图使用 `text` 代码块，宽度不超过 80 字符。
 
 判断图是否有用，不只看它能否复述模型，还要看它是否守住证据分寸：读者只看图，应能说出哪些概念在怎样作用、论文改变了什么判断，但不会得到超出实验支持的结论。若图只是把摘要换行，删除它。
 
@@ -97,10 +97,10 @@ description: "Paper reader for non-academics. Finds the load-bearing concepts th
 
 顶层章节固定为：
 
-1. `* 速读`
-2. `* 它到底在解决什么`
-3. `* 它真正看见了什么`
-4. `* 我能带走什么`
+1. `## 速读`
+2. `## 它到底在解决什么`
+3. `## 它真正看见了什么`
+4. `## 我能带走什么`
 
 ## Examples
 
@@ -116,8 +116,8 @@ description: "Paper reader for non-academics. Finds the load-bearing concepts th
 
 生成笔记后读回确认：
 
-- frontmatter 完整，文件确实保存成功。
-- `#+source` 只有一个裸 URL，没有描述文字或并列链接。
+- YAML frontmatter 完整，文件确实保存成功。
+- `source` 只有一个裸 URL，没有描述文字或并列链接。
 - 顶层只有四个规定章节。
 - 中心命题不是论文标题、模型名或贡献清单。
 - 至少有一个贯穿问题、洞见和带走的具体锚点。
