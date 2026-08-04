@@ -1,6 +1,6 @@
 ---
 name: ljg-book
-description: "Book reader that reconstructs a book as x -> f -> f(x): the problem it addresses, the author's central answer, and how that answer changes judgment or action. USE WHEN the user gives a book title, PDF, excerpt, or asks 拆书, 分析这本书, 这本书在讲什么, 压缩一本书, or book. Defaults to a saved org note. NOT FOR chapter summaries, framework audits, papers, single-idea deep dives, or field ranking."
+description: "Book reader that reconstructs a book as x -> f -> f(x): the problem it addresses, the author's central answer, and how that answer changes judgment or action. USE WHEN the user gives a book title, PDF, excerpt, or asks 拆书, 分析这本书, 这本书在讲什么, 压缩一本书, or book. Defaults to a saved markdown note. NOT FOR chapter summaries, framework audits, papers, single-idea deep dives, or field ranking."
 user_invocable: true
 ---
 
@@ -8,9 +8,9 @@ user_invocable: true
 
 把一本书还原成一条完整的逻辑链：
 
-- *x*：作者到底在处理什么问题。
-- *f*：作者给出的核心回答是什么。它可能是一个概念、区分、框架、方法、模型或叙事视角。
-- *f(x)*：把这个回答放回问题后，我们应当怎样重新理解、判断或行动。
+- **x**：作者到底在处理什么问题。
+- **f**：作者给出的核心回答是什么。它可能是一个概念、区分、框架、方法、模型或叙事视角。
+- **f(x)**：把这个回答放回问题后，我们应当怎样重新理解、判断或行动。
 
 目标不是把书压成一句鸡汤，也不是给作者做框架审计。读完笔记，既要知道「这本书在讲什么」，也要知道「它改变了我怎样回应这个问题」。
 
@@ -18,22 +18,22 @@ user_invocable: true
 
 | 输入 | 必读 | 输出 |
 |---|---|---|
-| 书名 | 查到可靠材料后读 `ReadingGuide.md` | 保存 org 笔记 |
-| PDF、正文、样章、旧笔记 | 先读材料，再读 `ReadingGuide.md` | 保存 org 笔记 |
+| 书名 | 查到可靠材料后读 `ReadingGuide.md` | 保存 Markdown 笔记 |
+| PDF、正文、样章、旧笔记 | 先读材料，再读 `ReadingGuide.md` | 保存 Markdown 笔记 |
 | 用户明确只要口头解释 | `ReadingGuide.md` | 不写文件，按同一路径讲 |
 
-写 org 文件时再读 `references/template.org`。默认保存到 `~/Documents/notes/`。
+写 Markdown 文件时再读 `references/template.md`。默认保存到 `00-Inbox/notes/`。
 
-文件名沿用 Denote：`{YYYYMMDDTHHMMSS}--拆书-{书名}__book.org`；时间戳用 `date +%Y%m%dT%H%M%S` 生成。
+文件名沿用 Denote：`{YYYYMMDDTHHMMSS}--拆书-{书名}__book.md`；时间戳用 `date +%Y%m%dT%H%M%S` 生成。
 
 ## Completion Target
 
 开头先给三行极简结论：
 
 ```org
-- *x*：{作者在讨论什么问题}
-- *f*：{作者用什么核心回答处理 x}
-- *f(x)*：{接受 f 后，面对 x 应如何回应}
+- **x**：{作者在讨论什么问题}
+- **f**：{作者用什么核心回答处理 x}
+- **f(x)**：{接受 f 后，面对 x 应如何回应}
 ```
 
 三行必须能连读：因为存在 x，作者提出 f；把 f 用在 x 上，得到 f(x)。如果三行只是三个相关观点，说明逻辑链还没接通。
@@ -74,7 +74,7 @@ user_invocable: true
 
 图不是标配；但当思想本身具有形状、空间关系或动态变化时，不能只用文字转述。图必须服务 `x → f → f(x)`，让读者只看图也能说出作者改变了哪个判断。
 
-- ASCII 图放进 org 的 `#+begin_example` / `#+end_example` 块。
+- ASCII 图放进 Markdown 的 fenced code block。
 - 保持图形不变形，宽度不超过 80 字符。
 - 一张足够；若图没有降低理解成本，删除它。
 
@@ -122,10 +122,10 @@ f(x)：新的理解 / 判断 / 行动
 
 顶层章节固定为：
 
-1. `* x：作者在讨论什么问题`
-2. `* f：作者怎样回答`
-3. `* f(x)：怎样回应这个世界`
-4. `* 资料校准`
+1. `# x：作者在讨论什么问题`
+2. `# f：作者怎样回答`
+3. `# f(x)：怎样回应这个世界`
+4. `# 资料校准`
 
 全文拆书的锚点不能都来自同一章或同一结论段；至少覆盖作者提出问题、展示机制、给出发现或边界的不同位置。
 
@@ -133,15 +133,15 @@ f(x)：新的理解 / 判断 / 行动
 
 **分析类书：《决策与判断》**
 
-- *x*：为什么同一个选择换一种表述，人会作出相反决定？
-- *f*：前景理论用参照点、损失厌恶与非线性概率权重解释判断偏移。
-- *f(x)*：重要选择先换一种得失表述；若答案随表述改变，暂缓决定。
+- **x**：为什么同一个选择换一种表述，人会作出相反决定？
+- **f**：前景理论用参照点、损失厌恶与非线性概率权重解释判断偏移。
+- **f(x)**：重要选择先换一种得失表述；若答案随表述改变，暂缓决定。
 
 **文学作品：《悉达多》**
 
-- *x*：智慧能否像知识一样由一个人传给另一个人？
-- *f*：教义可以指路，智慧却要在亲历、倾听与对矛盾经验的整合中生成；河流是这套回答的集中意象。
-- *f(x)*：向别人求答案时，先分清自己缺的是可传授的知识，还是尚未亲自消化的经验。
+- **x**：智慧能否像知识一样由一个人传给另一个人？
+- **f**：教义可以指路，智慧却要在亲历、倾听与对矛盾经验的整合中生成；河流是这套回答的集中意象。
+- **f(x)**：向别人求答案时，先分清自己缺的是可传授的知识，还是尚未亲自消化的经验。
 
 ## Completion
 
@@ -165,10 +165,10 @@ f(x)：新的理解 / 判断 / 行动
 - 资料校准只有必要来源，没有扩成研究综述。
 - 只读开头三行，就能回答：「这本书在问什么、怎样回答、回答之后怎么办？」
 
-写入 Org 后运行：
+写入 Markdown 后运行：
 
 ```sh
-bun {skill_dir}/scripts/validate_note.ts /absolute/path/to/note.org \
+bun {skill_dir}/scripts/validate_note.ts /absolute/path/to/note.md \
   --coverage /absolute/path/to/coverage-map.md
 ```
 

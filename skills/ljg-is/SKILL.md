@@ -1,6 +1,6 @@
 ---
 name: ljg-is
-description: 用于发现一个目标真正完成的最小变化：把身份、边界、质量、优化量和实现放进括号，只保留极短的「谁或什么从 A 到 B」核心，再将它压成可解释变量的最小结构式，用跨域迁移检验是否真正去语境化，并保存为经校验的 Org 笔记。USE WHEN 用户说 '/ljg-is', 'X 的本质是什么', 'The One', '找出目标的本质', '本质定义', '最小功能', '到底把什么变成什么', or 要求区分限定词与核心。NOT FOR 追问原因（用 ljg-think）、寻找母题或因果结构（用 ljg-structure）、句中随口说「本质上」。
+description: 用于发现一个目标真正完成的最小变化：把身份、边界、质量、优化量和实现放进括号，只保留极短的「谁或什么从 A 到 B」核心，再将它压成可解释变量的最小结构式，用跨域迁移检验是否真正去语境化，并保存为经校验的 Markdown 笔记。USE WHEN 用户说 '/ljg-is', 'X 的本质是什么', 'The One', '找出目标的本质', '本质定义', '最小功能', '到底把什么变成什么', or 要求区分限定词与核心。NOT FOR 追问原因（用 ljg-think）、寻找母题或因果结构（用 ljg-structure）、句中随口说「本质上」。
 user_invocable: true
 ---
 
@@ -48,7 +48,7 @@ The One = 本质的最小可迁移结构式
 
 | Workflow | Trigger | File |
 |---|---|---|
-| **FindEssence** | 从目标中提炼最小状态变化并保存 Org | `Workflows/FindEssence.md` |
+| **FindEssence** | 从目标中提炼最小状态变化并保存 Markdown | `Workflows/FindEssence.md` |
 
 ## 输出契约
 
@@ -67,7 +67,7 @@ The One = 本质的最小可迁移结构式
 边界：只迁移「对象的位置改变」；不迁移乘客身份、付费关系、舒适度或运输载体
 ```
 
-分析同时写入 `~/Documents/notes/{时间戳}--本质-{目标}__is.org`。只有用户明确说「只分析」「不落盘」或 `read-only` 时才不创建文件。
+分析同时写入 `00-Inbox/notes/{时间戳}--本质-{目标}__is.md`。只有用户明确说「只分析」「不落盘」或 `read-only` 时才不创建文件。
 
 ## Gotchas
 
